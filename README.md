@@ -3,48 +3,87 @@
 Código:
 
 ```
-// define os pinos
+// Adiciona biblioteca para protocolo I2C 
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+// Inicializa o display 
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// Define os pinos dos LEDs e do botão
 #define pin_red 16
 #define pin_yellow 17
 #define pin_green 18
-// define o tempo passado e inicializa como 0
+#define pin_botao 15
+
+// Define o tempo passado
 unsigned long _previousMillis = 0;
 
 void setup() {
-  // configura os pinos como saída
+  // Configura os pinos como saída
   pinMode(pin_red, OUTPUT);
   pinMode(pin_yellow, OUTPUT);
   pinMode(pin_green, OUTPUT);
-  // inicia acedendo o led vermelho
+
+  // Inicia o display
+  lcd.init();
+  lcd.backlight();
+
+  // Começa com o LED vermelho aceso
   digitalWrite(pin_red, HIGH);
+  digitalWrite(pin_yellow, LOW);
+  digitalWrite(pin_green, LOW);
+  lcd.clear();
+  lcd.setCursor(5, 0);
+  lcd.print("PARE!");
 }
 
 void loop() {
   unsigned long currentMillis = millis();
-  // acender o verde
-  if (currentMillis - _previousMillis == 6000 && digitalRead(pin_red) == HIGH){
-      digitalWrite(pin_green, HIGH);
-      digitalWrite(pin_yellow, LOW);
-      digitalWrite(pin_red, LOW);
-      _previousMillis = currentMillis;
-  }
-
-  // acender amarelo 
-  if (currentMillis - _previousMillis == 4000 && digitalRead(pin_green) == HIGH){
-      digitalWrite(pin_red, LOW);
-      digitalWrite(pin_yellow, HIGH);
-      digitalWrite(pin_green, LOW);
-      _previousMillis = currentMillis;
-  }
-
-  // acende vermelho
-  if ((currentMillis - _previousMillis == 2000 && digitalRead(pin_yellow) == HIGH)){
-      digitalWrite(pin_green, LOW);
-      digitalWrite(pin_yellow, LOW);
+  if (digitalRead(pin_botao) == LOW){
       digitalWrite(pin_red, HIGH);
-      _previousMillis = currentMillis;
-  }
+      digitalWrite(pin_yellow, HIGH);
+      digitalWrite(pin_green, HIGH);
+      lcd.clear();
+  } else{
+      // acender o verde
+      if (currentMillis - _previousMillis == 6000 && digitalRead(pin_red) == HIGH) {
+        digitalWrite(pin_red, LOW);
+        digitalWrite(pin_yellow, LOW);
+        digitalWrite(pin_green, HIGH);
+        lcd.clear();
+        lcd.setCursor(2, 0);
+        lcd.print("Sinal aberto!");
+
+        _previousMillis = currentMillis;
+      }
+
+      // acender o amarelo
+      if ((currentMillis - _previousMillis == 4000) && digitalRead(pin_green) == HIGH) {
+        digitalWrite(pin_red, LOW);
+        digitalWrite(pin_yellow, HIGH);
+        digitalWrite(pin_green, LOW);
+        lcd.clear();
+        lcd.setCursor(3, 0);
+        lcd.print("Cuidado...");
+
+        _previousMillis = currentMillis;
+      }
+
+      // acender o vermelho
+      if ((currentMillis - _previousMillis == 2000) && digitalRead(pin_yellow) == HIGH) {
+        digitalWrite(pin_red, HIGH);
+        digitalWrite(pin_yellow, LOW);
+        digitalWrite(pin_green, LOW);
+        lcd.clear();
+        lcd.setCursor(5, 0);
+        lcd.print("PARE!");
+
+        _previousMillis = currentMillis;
+      }
+    }
 }
+
 ```
 
 ### Tabela de Avaliação entre Pares
