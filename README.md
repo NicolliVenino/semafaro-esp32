@@ -86,6 +86,18 @@ void loop() {
 
 ```
 
+Imagens:
+
+<div align = "center">
+  <img src = "../assets/img1.jpg">
+ </div>
+
+<div align = "center">
+  <img src = "../assets/img2.jpg">
+ </div>
+
+Obs: haja vista que o Arduino IDE está apresentando problemas na máquina de todos os usuários nesta semana, não foi possível, até o dia 31/10/2025, anexar o vídeo do funcionamento do semáforo. No entanto, o professor conseguiu analisá-lo em sala funcionando. Caso o professor precise de mais explicações sobre o circuito ou sobre o código, estou capacitada para respondê-lo.
+
 ### Tabela de Avaliação entre Pares
 
 #### Avaliador: Lívia Cavalcante
